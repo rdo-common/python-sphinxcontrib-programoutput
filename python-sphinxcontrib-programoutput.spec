@@ -3,7 +3,7 @@
 
 Name:           python-sphinxcontrib-programoutput
 Version:        0.8
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Extension to insert output of commands into documents
 
 License:        BSD
@@ -15,9 +15,11 @@ Patch1:         https://github.com/lunaryorn/%{srcname}/commit/83502056efa0aaed2
 
 BuildArch:      noarch
 BuildRequires:  python2-devel
+BuildRequires:  python-setuptools
 BuildRequires:  python-sphinx
 BuildRequires:  pytest
 BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
 BuildRequires:  python3-sphinx
 BuildRequires:  python3-pytest
 BuildRequires:  git
@@ -26,7 +28,7 @@ BuildRequires:  web-assets-devel
 Requires:       python-sphinx
 Requires:       js-jquery
 
-Provides:       python2-%{srcname}
+Provides:       python2-%{srcname} = %{version}-%{release}
 
 %description
 A Sphinx extension to literally insert the output of arbitrary
@@ -44,6 +46,7 @@ up to date.
 
 %prep
 %autosetup -n %{srcname}-%{version} -S git
+rm -r *.egg-info
 
 %build
 %{__python2} setup.py build
@@ -74,6 +77,9 @@ PYTHONPATH=build/lib/ py.test-%{python3_version} tests/ -v
 %{python3_sitelib}/*
 
 %changelog
+* Mon Jul 27 2015 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.8-3
+- Make provides versioned
+
 * Fri Jul 24 2015 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.8-2
 - Remove stray __pycache__ dir
 - Add web-assets-devel to BR and Provide python2-*
