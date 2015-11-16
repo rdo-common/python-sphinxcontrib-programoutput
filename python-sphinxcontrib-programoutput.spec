@@ -3,7 +3,7 @@
 
 Name:           python-sphinxcontrib-programoutput
 Version:        0.8
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Extension to insert output of commands into documents
 
 License:        BSD
@@ -25,20 +25,29 @@ BuildRequires:  python3-pytest
 BuildRequires:  git
 BuildRequires:  web-assets-devel
 
+%description
+A Sphinx extension to literally insert the output of arbitrary
+commands into documents, helping you to keep your command examples
+up to date.
+
+%package -n python2-%{srcname}
+Summary:        %{summary}
 Requires:       python-sphinx
 Requires:       js-jquery
+%{?python_provide:%python_provide python2-%{srcname}}
 
-Provides:       python2-%{srcname} = %{version}-%{release}
-
-%description
+%description -n python2-%{srcname}
 A Sphinx extension to literally insert the output of arbitrary
 commands into documents, helping you to keep your command examples
 up to date.
 
 %package -n python3-%{srcname}
 Summary:       %{summary}
+
 Requires:       python3-sphinx
 Requires:       js-jquery
+%{?python_provide:%python_provide python3-%{srcname}}
+
 %description -n python3-%{srcname}
 A Sphinx extension to literally insert the output of arbitrary
 commands into documents, helping you to keep your command examples
@@ -49,14 +58,14 @@ up to date.
 rm -r *.egg-info
 
 %build
-%{__python2} setup.py build
-%{__python3} setup.py build
+%py2_build
+%py3_build
 PYTHONPATH=build/lib sphinx-build-3 -b html doc build/html
 rm -r build/html/.buildinfo build/html/.doctrees build/lib/sphinxcontrib/__pycache__
 
 %install
-%{__python2} setup.py install --skip-build --root %{buildroot}
-%{__python3} setup.py install --skip-build --root %{buildroot}
+%py2_install
+%py3_install
 mkdir -p %{buildroot}%{_pkgdocdir}
 cp -rv build/html %{buildroot}%{_pkgdocdir}/
 ln -vsf %{_jsdir}/jquery/latest/jquery.min.js %{buildroot}%{_pkgdocdir}/html/_static/jquery.js
@@ -66,7 +75,7 @@ export LC_CTYPE="en_US.utf8" # without this encoding tests break
 PYTHONPATH=build/lib/ py.test-%{python2_version} tests/ -v
 PYTHONPATH=build/lib/ py.test-%{python3_version} tests/ -v
 
-%files
+%files -n python2-%{srcname}
 %license LICENSE
 %doc CHANGES.rst README.rst
 %{python2_sitelib}/*
@@ -77,6 +86,9 @@ PYTHONPATH=build/lib/ py.test-%{python3_version} tests/ -v
 %{python3_sitelib}/*
 
 %changelog
+* Mon Nov 16 2015 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.8-4
+- Update to latest packaging guidelines
+
 * Mon Jul 27 2015 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.8-3
 - Make provides versioned
 
