@@ -8,15 +8,16 @@
 
 Name:           python-sphinxcontrib-programoutput
 Version:        0.8
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Extension to insert output of commands into documents
 
 License:        BSD
 URL:            https://pythonhosted.org/%{srcname}/
-# https://github.com/lunaryorn/sphinxcontrib-programoutput
 Source0:        https://pypi.python.org/packages/source/s/%{srcname}/%{srcname}-%{version}.tar.gz
-Patch0:         https://github.com/lunaryorn/%{srcname}/commit/592078e0386c2a36d50a6528b6e49d91707138bf.patch
-Patch1:         https://github.com/lunaryorn/%{srcname}/commit/83502056efa0aaed2a5edbd1f44a28d9d5d4815d.patch
+Patch1:         0001-Error-tolerant-output-decoding.patch
+Patch2:         0002-conftest.py-Use-basic-theme-instead-of-deprecated-de.patch
+Patch3:         0003-Use-modern-pytest.fixture-syntax.patch
+Patch4:         0004-Add-work-around-for-duplicated-directive-warning.patch
 
 BuildArch:      noarch
 BuildRequires:  python2-devel
@@ -110,6 +111,9 @@ PYTHONPATH=build/lib/ py.test-%{python3_version} tests/ -v
 %endif
 
 %changelog
+* Tue Jan 10 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.8-8
+- Fix build with new pytest and sphinx-1.5
+
 * Mon Dec 19 2016 Miro Hrončok <mhroncok@redhat.com> - 0.8-7
 - Rebuild for Python 3.6
 

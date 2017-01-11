@@ -1,0 +1,132 @@
+From 4853fbcbaeea880d849601c0ecf731dff791a82e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Zbigniew=20J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>
+Date: Tue, 10 Jan 2017 22:00:10 -0500
+Subject: [PATCH 3/4] Use modern pytest.fixture syntax
+
+---
+ tests/conftest.py   | 28 ++++++++++++++++------------
+ tests/test_cache.py |  4 ++--
+ tests/test_setup.py |  5 +++--
+ 3 files changed, 21 insertions(+), 16 deletions(-)
+
+diff --git a/tests/conftest.py b/tests/conftest.py
+index f4b4dbc2d9..bef4111af6 100644
+--- a/tests/conftest.py
++++ b/tests/conftest.py
+@@ -49,8 +49,8 @@
+ html_theme = 'basic'
+ """
+ 
+-
+-def pytest_funcarg__content(request):
++@pytest.fixture
++def content(request):
+     """
+     Return the content for the current test, extracted from ``with_content``
+     marker.
+@@ -65,7 +65,8 @@ def pytest_funcarg__content(request):
+     return content
+ 
+ 
+-def pytest_funcarg__srcdir(request):
++@pytest.fixture
++def srcdir(request):
+     """
+     Generated source directory for test Sphinx application.
+     """
+@@ -86,23 +87,24 @@ def pytest_funcarg__srcdir(request):
+     return srcdir
+ 
+ 
+-def pytest_funcarg__outdir(request):
++@pytest.fixture
++def outdir(request):
+     """
+     Output directory for current test.
+     """
+     tmpdir = request.getfuncargvalue('tmpdir')
+     return tmpdir.join('html')
+ 
+-
+-def pytest_funcarg__doctreedir(request):
++@pytest.fixture
++def doctreedir(request):
+     """
+     The doctree directory for the current.
+     """
+     tmpdir = request.getfuncargvalue('tmpdir')
+     return tmpdir.join('doctrees')
+ 
+-
+-def pytest_funcarg__confoverrides(request):
++@pytest.fixture
++def confoverrides(request):
+     """
+     Confoverrides for the current test as dict, extracted from the keyword
+     arguments to the ``confoverrides`` marker.
+@@ -113,8 +115,8 @@ def pytest_funcarg__confoverrides(request):
+     else:
+         return {}
+ 
+-
+-def pytest_funcarg__app(request):
++@pytest.fixture
++def app(request):
+     """
+     Sphinx application for the current test.
+     """
+@@ -131,13 +133,15 @@ def pytest_funcarg__app(request):
+     return app
+ 
+ 
+-def pytest_funcarg__doctree(request):
++@pytest.fixture
++def doctree(request):
+     request.applymarker(pytest.mark.build_app)
+     app = request.getfuncargvalue('app')
+     return app.env.get_doctree('content/doc')
+ 
+ 
+-def pytest_funcarg__cache(request):
++@pytest.fixture
++def cache(request):
+     request.applymarker(pytest.mark.build_app)
+     app = request.getfuncargvalue('app')
+     return app.env.programoutput_cache
+diff --git a/tests/test_cache.py b/tests/test_cache.py
+index 0bc42b2e72..282ea9664d 100644
+--- a/tests/test_cache.py
++++ b/tests/test_cache.py
+@@ -32,8 +32,8 @@
+ 
+ from sphinxcontrib.programoutput import ProgramOutputCache, Command
+ 
+-
+-def pytest_funcarg__cache(request):
++@pytest.fixture
++def cache(request):
+     return ProgramOutputCache()
+ 
+ 
+diff --git a/tests/test_setup.py b/tests/test_setup.py
+index 2347d95af9..5d6e6a38dc 100644
+--- a/tests/test_setup.py
++++ b/tests/test_setup.py
+@@ -26,11 +26,12 @@
+ from __future__ import (print_function, division, unicode_literals,
+                         absolute_import)
+ 
++import pytest
+ 
+ from sphinxcontrib.programoutput import ProgramOutputCache
+ 
+-
+-def pytest_funcarg__content(request): # pylint: disable=W0613
++@pytest.fixture
++def content(request): # pylint: disable=W0613
+     return 'dummy content'
+ 
+ 
+-- 
+2.11.0
+
