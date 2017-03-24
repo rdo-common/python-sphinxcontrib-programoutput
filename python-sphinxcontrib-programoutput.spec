@@ -8,7 +8,7 @@
 
 Name:           python-sphinxcontrib-programoutput
 Version:        0.8
-Release:        9%{?dist}
+Release:        10%{?dist}
 Summary:        Extension to insert output of commands into documents
 
 License:        BSD
@@ -91,6 +91,9 @@ mkdir -p %{buildroot}%{_pkgdocdir}
 cp -rv build/html %{buildroot}%{_pkgdocdir}/
 ln -vsf %{_jsdir}/jquery/latest/jquery.min.js %{buildroot}%{_pkgdocdir}/html/_static/jquery.js
 
+# remove .pth file which is useless under python3 and breaks namespace modules
+rm %{buildroot}%{python3_sitelib}/sphinxcontrib_programoutput-*-nspkg.pth
+
 %check
 export LC_CTYPE="en_US.utf8" # without this encoding tests break
 PYTHONPATH=build/lib/ py.test-%{python2_version} tests/ -v
@@ -111,6 +114,9 @@ PYTHONPATH=build/lib/ py.test-%{python3_version} tests/ -v
 %endif
 
 %changelog
+* Fri Mar 24 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.8-10
+- Drop useless .pth files under python3
+
 * Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.8-9
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
