@@ -8,7 +8,7 @@
 
 Name:           python-sphinxcontrib-programoutput
 Version:        0.8
-Release:        10%{?dist}
+Release:        11%{?dist}
 Summary:        Extension to insert output of commands into documents
 
 License:        BSD
@@ -114,6 +114,9 @@ PYTHONPATH=build/lib/ py.test-%{python3_version} tests/ -v
 %endif
 
 %changelog
+* Thu Jul 27 2017 Fedora Release Engineering <releng@fedoraproject.org> - 0.8-11
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
+
 * Fri Mar 24 2017 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.8-10
 - Drop useless .pth files under python3
 
