@@ -7,17 +7,13 @@
 %endif
 
 Name:           python-sphinxcontrib-programoutput
-Version:        0.8
-Release:        12%{?dist}
+Version:        0.11
+Release:        1%{?dist}
 Summary:        Extension to insert output of commands into documents
 
 License:        BSD
-URL:            https://pythonhosted.org/%{srcname}/
-Source0:        https://pypi.python.org/packages/source/s/%{srcname}/%{srcname}-%{version}.tar.gz
-Patch1:         0001-Error-tolerant-output-decoding.patch
-Patch2:         0002-conftest.py-Use-basic-theme-instead-of-deprecated-de.patch
-Patch3:         0003-Use-modern-pytest.fixture-syntax.patch
-Patch4:         0004-Add-work-around-for-duplicated-directive-warning.patch
+URL:            https://pypi.python.org/pypi/sphinxcontrib-programoutput
+Source0:        https://github.com/NextThought/sphinxcontrib-programoutput/archive/%{version}/%{srcname}-%{version}.tar.gz
 
 BuildArch:      noarch
 BuildRequires:  python2-devel
@@ -41,7 +37,7 @@ up to date.
 
 %package -n python2-%{srcname}
 Summary:        %{summary}
-Requires:       python-sphinx
+Requires:       python2-sphinx
 Requires:       js-jquery
 %{?python_provide:%python_provide python2-%{srcname}}
 
@@ -67,10 +63,6 @@ up to date.
 %prep
 %autosetup -n %{srcname}-%{version} -S git
 
-# ^ additional newline to work around #1225118
-# can be removed once you are on rpm-4.11.3-17.el7
-rm -r *.egg-info
-
 %build
 %py2_build
 %if %{with python3}
@@ -95,10 +87,15 @@ ln -vsf %{_jsdir}/jquery/latest/jquery.min.js %{buildroot}%{_pkgdocdir}/html/_st
 rm %{buildroot}%{python3_sitelib}/sphinxcontrib_programoutput-*-nspkg.pth
 
 %check
-export LC_CTYPE="en_US.utf8" # without this encoding tests break
-PYTHONPATH=build/lib/ py.test-%{python2_version} tests/ -v
+export LC_CTYPE="en_US.utf8"        # without this encoding tests break
+
+# We call 'python' just for some simple output, so any version is fine.
+# Silence the warning.
+export PYTHON_DISALLOW_AMBIGUOUS_VERSION=0
+
+PYTHONPATH=build/lib/ py.test-%{python2_version} -v build/lib/sphinxcontrib
 %if %{with python3}
-PYTHONPATH=build/lib/ py.test-%{python3_version} tests/ -v
+PYTHONPATH=build/lib/ py.test-%{python3_version} -v build/lib/sphinxcontrib
 %endif
 
 %files -n python2-%{srcname}
@@ -114,6 +111,9 @@ PYTHONPATH=build/lib/ py.test-%{python3_version} tests/ -v
 %endif
 
 %changelog
+* Sat Feb 24 2018 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.11-1
+- Switch upstream, update to latest version
+
 * Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.8-12
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
