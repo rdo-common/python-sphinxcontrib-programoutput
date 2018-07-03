@@ -21,6 +21,9 @@ BuildRequires:  python2-setuptools
 BuildRequires:  python2-sphinx
 BuildRequires:  python2-pytest
 
+# We call 'python' just for some simple output, so any version is fine.
+BuildRequires:  /usr/bin/python
+
 %if %{with python3}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
@@ -88,10 +91,6 @@ rm %{buildroot}%{python3_sitelib}/sphinxcontrib_programoutput-*-nspkg.pth
 
 %check
 export LC_CTYPE="en_US.utf8"        # without this encoding tests break
-
-# We call 'python' just for some simple output, so any version is fine.
-# Silence the warning.
-export PYTHON_DISALLOW_AMBIGUOUS_VERSION=0
 
 PYTHONPATH=build/lib/ py.test-%{python2_version} -v build/lib/sphinxcontrib
 %if %{with python3}
