@@ -8,7 +8,7 @@
 
 Name:           python-sphinxcontrib-programoutput
 Version:        0.11
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Extension to insert output of commands into documents
 
 License:        BSD
@@ -111,6 +111,9 @@ PYTHONPATH=build/lib/ py.test-%{python3_version} -v build/lib/sphinxcontrib
 %endif
 
 %changelog
+* Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.11-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
 * Tue Jun 19 2018 Miro Hrončok <mhroncok@redhat.com> - 0.11-3
 - Rebuilt for Python 3.7
 
