@@ -64,7 +64,7 @@ up to date.
 %endif
 
 %prep
-%autosetup -n %{srcname}-%{version} -S git
+%autosetup -n %{srcname}-%{version}
 
 %build
 %py2_build
