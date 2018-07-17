@@ -21,9 +21,6 @@ BuildRequires:  python2-setuptools
 BuildRequires:  python2-sphinx
 BuildRequires:  python2-pytest
 
-# We call 'python' just for some simple output, so any version is fine.
-BuildRequires:  /usr/bin/python
-
 %if %{with python3}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
@@ -65,6 +62,9 @@ up to date.
 
 %prep
 %autosetup -n %{srcname}-%{version}
+%if %{with python3}
+sed -r -i s/python/python3/ src/sphinxcontrib/programoutput/tests/{test_directive.py,test_command.py,test_cache.py}
+%endif
 
 %build
 %py2_build
@@ -92,9 +92,11 @@ rm %{buildroot}%{python3_sitelib}/sphinxcontrib_programoutput-*-nspkg.pth
 %check
 export LC_CTYPE="en_US.utf8"        # without this encoding tests break
 
-PYTHONPATH=build/lib/ py.test-%{python2_version} -v build/lib/sphinxcontrib
+# test_standard_error_disabled assumes that the called python has the
+# same version as the calling python, which doesn't hold.
+PYTHONPATH=build/lib/ py.test-%{python2_version} -v build/lib/sphinxcontrib -k 'not test_standard_error_disabled'
 %if %{with python3}
-PYTHONPATH=build/lib/ py.test-%{python3_version} -v build/lib/sphinxcontrib
+PYTHONPATH=build/lib/ py.test-%{python3_version} -v build/lib/sphinxcontrib -k 'not test_standard_error_disabled'
 %endif
 
 %files -n python2-%{srcname}
