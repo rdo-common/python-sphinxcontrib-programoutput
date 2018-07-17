@@ -90,7 +90,7 @@ ln -vsf %{_jsdir}/jquery/latest/jquery.min.js %{buildroot}%{_pkgdocdir}/html/_st
 rm %{buildroot}%{python3_sitelib}/sphinxcontrib_programoutput-*-nspkg.pth
 
 %check
-export LC_CTYPE="en_US.utf8"        # without this encoding tests break
+export LC_CTYPE="C.utf8"        # without this encoding tests break
 
 # test_standard_error_disabled assumes that the called python has the
 # same version as the calling python, which doesn't hold.
