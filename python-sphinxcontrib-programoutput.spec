@@ -8,7 +8,7 @@
 
 Name:           python-sphinxcontrib-programoutput
 Version:        0.11
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Extension to insert output of commands into documents
 
 License:        BSD
@@ -38,7 +38,6 @@ up to date.
 %package -n python2-%{srcname}
 Summary:        %{summary}
 Requires:       python2-sphinx
-Requires:       js-jquery
 %{?python_provide:%python_provide python2-%{srcname}}
 
 %description -n python2-%{srcname}
@@ -51,7 +50,6 @@ up to date.
 Summary:       %{summary}
 
 Requires:       python3-sphinx
-Requires:       js-jquery
 %{?python_provide:%python_provide python3-%{srcname}}
 
 %description -n python3-%{srcname}
@@ -84,13 +82,14 @@ rm -r build/html/.buildinfo build/html/.doctrees
 %endif
 mkdir -p %{buildroot}%{_pkgdocdir}
 cp -rv build/html %{buildroot}%{_pkgdocdir}/
-ln -vsf %{_jsdir}/jquery/latest/jquery.min.js %{buildroot}%{_pkgdocdir}/html/_static/jquery.js
 
+%if %{with python3}
 # remove .pth file which is useless under python3 and breaks namespace modules
 rm %{buildroot}%{python3_sitelib}/sphinxcontrib_programoutput-*-nspkg.pth
+%endif
 
 %check
-export LC_CTYPE="C.utf8"        # without this encoding tests break
+export LC_CTYPE="en_US.UTF-8"        # without this encoding tests break
 
 # test_standard_error_disabled assumes that the called python has the
 # same version as the calling python, which doesn't hold.
@@ -102,6 +101,7 @@ PYTHONPATH=build/lib/ py.test-%{python3_version} -v build/lib/sphinxcontrib -k '
 %files -n python2-%{srcname}
 %license LICENSE
 %doc CHANGES.rst README.rst
+%doc %{_pkgdocdir}
 %{python2_sitelib}/*
 
 %if %{with python3}
@@ -112,6 +112,9 @@ PYTHONPATH=build/lib/ py.test-%{python3_version} -v build/lib/sphinxcontrib -k '
 %endif
 
 %changelog
+* Wed Oct 3 2018 Alfredo Moralejo <amoralej@redhat.com> - 0.11-5
+- Removed js-jquery as requirement. It bundles a js-jquery which is used instead.
+
 * Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 0.11-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
