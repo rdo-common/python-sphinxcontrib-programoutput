@@ -57,8 +57,6 @@ ln -vsf %{_jsdir}/jquery/latest/jquery.min.js %{buildroot}%{_pkgdocdir}/html/_st
 rm %{buildroot}%{python3_sitelib}/sphinxcontrib_programoutput-*-nspkg.pth
 
 %check
-export LC_CTYPE="C.utf8"        # without this encoding tests break
-
 PYTHONPATH=build/lib/ py.test-%{python3_version} -v build/lib/sphinxcontrib -k 'not test_standard_error_disabled'
 
 %files -n python3-%{srcname}
