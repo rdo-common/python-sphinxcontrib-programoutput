@@ -1,9 +1,10 @@
+%{?python_enable_dependency_generator}
 %global srcname sphinxcontrib-programoutput
 %global _docdir_fmt %{name}
 
 Name:           python-sphinxcontrib-programoutput
 Version:        0.11
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Extension to insert output of commands into documents
 
 License:        BSD
@@ -15,7 +16,7 @@ BuildRequires:  python3-sphinx
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
-BuildRequires:  python3-sphinx
+BuildRequires:  python3dist(sphinx) >= 1.3.5
 BuildRequires:  python3-pytest
 BuildRequires:  git
 BuildRequires:  web-assets-devel
@@ -28,7 +29,6 @@ up to date.
 %package -n python3-%{srcname}
 Summary:       %{summary}
 
-Requires:       python3-sphinx
 Requires:       js-jquery
 %{?python_provide:%python_provide python3-%{srcname}}
 
@@ -65,6 +65,9 @@ PYTHONPATH=build/lib/ py.test-%{python3_version} -v build/lib/sphinxcontrib -k '
 %{python3_sitelib}/*
 
 %changelog
+* Sat Dec 29 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 0.11-6
+- Enable python dependency generator
+
 * Fri Dec 28 2018 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.11-5
 - Subpackage python2-sphinxcontrib-programoutput has been removed
   See https://fedoraproject.org/wiki/Changes/Mass_Python_2_Package_Removal
