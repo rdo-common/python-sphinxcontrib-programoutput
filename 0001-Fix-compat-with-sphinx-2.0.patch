@@ -1,0 +1,25 @@
+From ce57642afe4eac41b6acda9e57251bc35f579351 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Zbigniew=20J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>
+Date: Mon, 3 Jun 2019 22:10:40 +0200
+Subject: [PATCH] Fix compat with sphinx 2.0
+
+C.f. https://github.com/pytest-dev/pytest/pull/4922/files.
+---
+ doc/conf.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/doc/conf.py b/doc/conf.py
+index 13661f8830..3be3f81db9 100644
+--- a/doc/conf.py
++++ b/doc/conf.py
+@@ -62,5 +62,5 @@ extlinks = {
+ }
+ 
+ def setup(app):
+-    app.add_description_unit('confval', 'confval',
+-                             'pair: %s; configuration value')
++    app.add_object_type('confval', 'confval',
++                        'pair: %s; configuration value')
+-- 
+2.20.1
+

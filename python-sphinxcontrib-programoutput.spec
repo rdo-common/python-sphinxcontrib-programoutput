@@ -10,6 +10,7 @@ Summary:        Extension to insert output of commands into documents
 License:        BSD
 URL:            https://pypi.python.org/pypi/sphinxcontrib-programoutput
 Source0:        https://github.com/NextThought/sphinxcontrib-programoutput/archive/%{version}/%{srcname}-%{version}.tar.gz
+Patch0:         0001-Fix-compat-with-sphinx-2.0.patch
 
 BuildArch:      noarch
 BuildRequires:  python3-sphinx
@@ -38,7 +39,7 @@ commands into documents, helping you to keep your command examples
 up to date.
 
 %prep
-%autosetup -n %{srcname}-%{version}
+%autosetup -n %{srcname}-%{version} -p1
 sed -r -i s/python/python3/ src/sphinxcontrib/programoutput/tests/{test_directive.py,test_command.py,test_cache.py}
 
 %build
@@ -65,8 +66,11 @@ PYTHONPATH=build/lib/ py.test-%{python3_version} -v build/lib/sphinxcontrib -k '
 %{python3_sitelib}/*
 
 %changelog
-* Mon Apr 26 2019 Yatin Karel <ykarel@redhat.com> - 0.14-1
-- Update to 0.14
+* Mon Jun  3 2019 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 0.14-1
+- Fix compatibility with sphinx 2.0 (#1716531)
+
+* Fri Apr 26 2019 Yatin Karel <ykarel@redhat.com> - 0.14-1
+- Update to 0.14 (#1697058)
 
 * Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 0.11-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
