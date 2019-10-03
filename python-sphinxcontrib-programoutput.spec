@@ -4,7 +4,7 @@
 
 Name:           python-sphinxcontrib-programoutput
 Version:        0.14
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Extension to insert output of commands into documents
 
 License:        BSD
@@ -66,6 +66,9 @@ PYTHONPATH=build/lib/ py.test-%{python3_version} -v build/lib/sphinxcontrib -k '
 %{python3_sitelib}/*
 
 %changelog
+* Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 0.14-4
+- Rebuilt for Python 3.8.0rc1 (#1748018)
+
 * Mon Aug 19 2019 Miro Hrončok <mhroncok@redhat.com> - 0.14-3
 - Rebuilt for Python 3.8
 
