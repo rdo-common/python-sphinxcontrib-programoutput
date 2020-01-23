@@ -30,7 +30,7 @@ up to date.
 %package -n python3-%{srcname}
 Summary:       %{summary}
 
-Requires:       js-jquery
+#Requires:       js-jquery
 %{?python_provide:%python_provide python3-%{srcname}}
 
 %description -n python3-%{srcname}
